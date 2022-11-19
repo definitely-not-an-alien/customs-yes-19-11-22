@@ -14,9 +14,11 @@ screen_scrolling = 0
 pipe_width = 90
 pipe_height = 400
 pipe_pos = width
+pipe_interval = 200
+pipe_gap = 200
 pipes = []
 for i in range(6):
-    pipes.append(random.randint(0, height - 80))
+    pipes.append(random.randint(pipe_gap, height - pipe_gap))
 
 font = pygame.font.SysFont('monospace', 30)
 screen = pygame.display.set_mode(size)
@@ -36,10 +38,10 @@ score = font.render(str(score_text), False, "white")
 
 
 def is_colliding():
-    return pipe_pos <= (bird_x +
-                        bird_width) and (pipe_pos + pipe_width) >= bird_x and (
-                            pipes[0] <= (bird_y + bird_height)
-                            or pipes[0] - 80 - pipe_height >= bird_y)
+    return pipe_pos <= (bird_x + bird_width) and (
+        pipe_pos + pipe_width) >= bird_x and (pipes[0] <=
+                                              (bird_y + bird_height)
+                                              or pipes[0] - pipe_gap >= bird_y)
 
 
 while True:
@@ -59,17 +61,18 @@ while True:
         screen_scrolling = 0
 
     for p in range(6):
-        screen.blit(t_pipe, (pipe_pos + p *
-                             (pipe_width + 100), pipes[p] - 80 - pipe_height))
-        screen.blit(b_pipe, (pipe_pos + p * (pipe_width + 100), pipes[p]))
+        screen.blit(t_pipe, (pipe_pos + p * (pipe_width + pipe_interval),
+                             pipes[p] - pipe_gap - pipe_height))
+        screen.blit(b_pipe,
+                    (pipe_pos + p * (pipe_width + pipe_interval), pipes[p]))
 
-    if (pipe_pos < -pipe_width):
+    pipe_pos -= 1
+    if (pipe_pos < -pipe_width - 1):
         pipes.pop(0)
-        pipes.append(random.randint(0, height - 80))
-        pipe_pos += (pipe_width + 100)
-        score += 1
-
-    pipe_pos -= 3
+        pipes.append(random.randint(pipe_gap, height - pipe_gap))
+        pipe_pos += (pipe_width + pipe_interval)
+        score_text += 1
+        score = font.render(str(score_text), False, "white")
 
     if (is_colliding()):
         game_over = True
