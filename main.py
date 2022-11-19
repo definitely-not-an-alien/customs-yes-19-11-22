@@ -38,10 +38,7 @@ score = font.render(str(score_text), False, "white")
 
 
 def is_colliding():
-    return pipe_pos <= (bird_x + bird_width) and (
-        pipe_pos + pipe_width) >= bird_x and (pipes[0] <=
-                                              (bird_y + bird_height)
-                                              or pipes[0] - pipe_gap >= bird_y)
+    return pipe_pos <= (bird_x + bird_width) and (pipe_pos + pipe_width) >= bird_x and (pipes[0] <= (bird_y + bird_height) or pipes[0] - pipe_gap >= bird_y)
 
 
 while True:
@@ -51,20 +48,18 @@ while True:
             pygame.quit()
             sys.exit()
         elif event.type == KEYDOWN:
-            if event.key == K_SPACE:
-                jumping += 25
+#             if event.key == K_SPACE:
+            jumping += 25
 
     for s in range(2):
         screen.blit(bg_image, (screen_scrolling + s * width, 0))
     screen_scrolling -= 2
     if (screen_scrolling < -width):
         screen_scrolling = 0
-
+        
     for p in range(6):
-        screen.blit(t_pipe, (pipe_pos + p * (pipe_width + pipe_interval),
-                             pipes[p] - pipe_gap - pipe_height))
-        screen.blit(b_pipe,
-                    (pipe_pos + p * (pipe_width + pipe_interval), pipes[p]))
+        screen.blit(t_pipe, (pipe_pos + p * (pipe_width + pipe_interval), pipes[p] - pipe_gap - pipe_height))
+        screen.blit(b_pipe, (pipe_pos + p * (pipe_width + pipe_interval), pipes[p]))
 
     pipe_pos -= 1
 
@@ -82,8 +77,7 @@ while True:
         font = pygame.font.SysFont('monospace', 60)
         font.set_bold(True)
         gg = font.render("GAME OVER", False, "white")
-        screen.blit(gg, (width / 2 - font.size(str("GAME OVER"))[0] / 2,
-                         height / 2 - font.size(str("GAME OVER"))[1] / 2))
+        screen.blit(gg, (width / 2 - font.size(str("GAME OVER"))[0] / 2, height / 2 - font.size(str("GAME OVER"))[1] / 2))
     else:
         if (jumping > 0):
             speed_bird = -5
